@@ -1,10 +1,16 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/popular_product_controller.dart';
+import 'package:foodapp/controllers/recommended_product_controller.dart';
+import 'package:foodapp/models/product_models.dart';
 import 'package:foodapp/pages/food/popular_food_detail.dart';
 import 'package:foodapp/pages/food/recommended_food_detail.dart';
+import 'package:foodapp/routes/routes_helper.dart';
+import 'package:foodapp/utils/app_constants.dart';
 import 'package:foodapp/widgets/big_text.dart';
 import 'package:foodapp/widgets/small_text.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class FoodPageBody extends StatefulWidget {
@@ -44,27 +50,28 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       children: [
         //! slider section
         GetBuilder<PopularProductController>(builder: (popularProducts) {
-          return Container(
-            height: 320,
-            child: PageView.builder(
-                controller: pageController,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PopularFoodDetails()));
-                      },
-                      child: _buildPageItem(index));
-                }),
-          );
+          return popularProducts.isLoaded
+              ? Container(
+                  height: 320,
+                  child: PageView.builder(
+                      controller: pageController,
+                      itemCount: popularProducts.popularProductList.length,
+                      itemBuilder: (context, index) {
+                        return _buildPageItem(
+                            index, popularProducts.popularProductList[index]);
+                      }),
+                )
+              : const CircularProgressIndicator(
+                  color: Colors.pink,
+                );
         }),
         //! dots section
         GetBuilder<PopularProductController>(builder: (popularProducts) {
-          return DotsIndicator(dotsCount: 5, position: _currPageValue);
+          return DotsIndicator(
+              dotsCount: popularProducts.popularProductList.isEmpty
+                  ? 1
+                  : popularProducts.popularProductList.length,
+              position: _currPageValue);
         }),
         // popular text
         const SizedBox(
@@ -76,7 +83,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               BigText(
-                text: "Popular",
+                text: "Recommended",
                 color: Colors.black87,
               ),
               // !the dot indicator
@@ -105,88 +112,101 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           ),
         ),
         // !list of images and their texts
-        ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const RecommendedFoodDetails()));
-                },
-                child: Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white38,
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2017/01/22/19/12/pizza-2000595__340.jpg'),
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                      //  !text section
-                      Expanded(
-                        child: Container(
-                          height: 100,
-                          decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                              color: Colors.white),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: 10,
+        GetBuilder<RecommendedProductController>(
+            builder: (recommendeProductList) {
+          return recommendeProductList.isLoaded
+              ? ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount:
+                      recommendeProductList.recommendedProductList.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        // ! navigate tp recommended product details
+                        Get.toNamed(RouteHelper.getRecommendedFood(index));
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 20, right: 20, bottom: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white38,
+                                  image: DecorationImage(
+                                    image: NetworkImage(AppConstants.BASE_URL +
+                                        "/uploads/" +
+                                        recommendeProductList
+                                            .recommendedProductList[index]
+                                            .img!),
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                BigText(text: "Nutritious Meal in Kenya"),
-                                const SizedBox(
-                                  height: 5,
+                            //  !text section
+                            Expanded(
+                              child: Container(
+                                height: 100,
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        bottomRight: Radius.circular(20)),
+                                    color: Colors.white),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      BigText(
+                                          text: recommendeProductList
+                                              .recommendedProductList[index]
+                                              .name!),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      const Text(
+                                        "With Kenyan taste",
+                                        style: TextStyle(
+                                            color: Colors.black45,
+                                            fontSize: 14),
+                                      ),
+                                      // !icontext elements
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          textIcon(Icons.circle, 'Normal',
+                                              Colors.yellow),
+                                          textIcon(Icons.location_on, "1.7Km",
+                                              Colors.teal.shade200),
+                                          textIcon(Icons.timer_sharp, '32 mins',
+                                              Colors.pink)
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                const Text(
-                                  "With Kenyan characteristics",
-                                  style: TextStyle(
-                                      color: Colors.black45, fontSize: 14),
-                                ),
-                                // !icontext elements
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    textIcon(
-                                        Icons.circle, 'Normal', Colors.yellow),
-                                    textIcon(Icons.location_on, "1.7Km",
-                                        Colors.teal.shade200),
-                                    textIcon(Icons.timer_sharp, '32 mins',
-                                        Colors.pink)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }),
+                      ),
+                    );
+                  })
+              : const CircularProgressIndicator(
+                  color: Colors.pink,
+                );
+        })
       ],
     );
   }
@@ -207,7 +227,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     );
   }
 
-  Widget _buildPageItem(int index) {
+  Widget _buildPageItem(int index, ProductModel popularProduct) {
     Matrix4 matrix4 = Matrix4.identity();
     if (index == _currPageValue.floor()) {
       var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
@@ -222,16 +242,22 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       transform: matrix4,
       child: Stack(
         children: [
-          Container(
-            height: 220,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: const Color(0xFF69c5df),
-                image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2017/12/10/14/47/pizza-3010062__340.jpg'))),
+          InkWell(
+            onTap: () {
+              Get.toNamed(RouteHelper.getPopularFood(index));
+            },
+            child: Container(
+              height: 220,
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: const Color(0xFF69c5df),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(AppConstants.BASE_URL +
+                          "/uploads/" +
+                          popularProduct.img!))),
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -248,7 +274,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BigText(
-                      text: "Kenyan Test",
+                      text: popularProduct.name!,
                       color: Colors.black54,
                     ),
                     const SizedBox(

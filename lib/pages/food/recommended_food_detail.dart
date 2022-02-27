@@ -12,7 +12,9 @@ import 'package:get/get.dart';
 
 class RecommendedFoodDetails extends StatelessWidget {
   int pageId;
-  RecommendedFoodDetails({Key? key, required this.pageId}) : super(key: key);
+  String page;
+  RecommendedFoodDetails({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +34,14 @@ class RecommendedFoodDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
-                      onTap: () => Get.toNamed(RouteHelper.getIntial()),
-                      child: const AppIcon(icon: Icons.clear)),
+                      onTap: () {
+                        if (page == "cartPage") {
+                          Get.toNamed(RouteHelper.getCartPage());
+                        } else {
+                          Get.toNamed(RouteHelper.getIntial());
+                        }
+                      },
+                      child: const AppIcon(icon: Icons.arrow_back_ios)),
                   //const AppIcon(icon: Icons.shopping_cart_outlined)
                   GetBuilder<PopularProductController>(builder: (controller) {
                     return Stack(
@@ -45,7 +53,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                                 top: 0,
                                 child: InkWell(
                                   onTap: () {
-                                    Get.to(() => const CartPage());
+                                    Get.toNamed(RouteHelper.getCartPage());
                                   },
                                   child: const AppIcon(
                                       icon: Icons.circle,

@@ -14,6 +14,9 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   @override
   Widget build(BuildContext context) {
+    // print('The width is ' + MediaQuery.of(context).size.width.toString());
+    // print(
+    //     "The device height is" + MediaQuery.of(context).size.height.toString());
     return Scaffold(
         body: Column(
       children: [

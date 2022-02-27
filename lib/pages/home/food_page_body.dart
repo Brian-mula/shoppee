@@ -124,7 +124,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                     return InkWell(
                       onTap: () {
                         // ! navigate tp recommended product details
-                        Get.toNamed(RouteHelper.getRecommendedFood(index));
+                        Get.toNamed(
+                            RouteHelper.getRecommendedFood(index, 'home'));
                       },
                       child: Container(
                         margin: const EdgeInsets.only(
@@ -244,7 +245,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         children: [
           InkWell(
             onTap: () {
-              Get.toNamed(RouteHelper.getPopularFood(index));
+              Get.toNamed(RouteHelper.getPopularFood(index, 'home'));
             },
             child: Container(
               height: 220,
@@ -284,7 +285,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                       children: [
                         Wrap(
                           children: List.generate(
-                              5,
+                              popularProduct.stars!,
                               (index) => const Icon(
                                     Icons.star_outline,
                                     color: Colors.teal,
@@ -359,7 +360,7 @@ Row iconText(IconData icon, String text, Color iconColor) {
       ),
       Text(
         text,
-        style: TextStyle(fontSize: 12, color: Colors.black38),
+        style: const TextStyle(fontSize: 12, color: Colors.black38),
       )
     ],
   );

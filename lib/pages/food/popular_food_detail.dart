@@ -11,7 +11,9 @@ import "package:get/get.dart";
 
 class PopularFoodDetails extends StatelessWidget {
   int pageId;
-  PopularFoodDetails({Key? key, required this.pageId}) : super(key: key);
+  String page;
+  PopularFoodDetails({Key? key, required this.pageId, required this.page})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,43 +48,49 @@ class PopularFoodDetails extends StatelessWidget {
                     // !navigation section
                     InkWell(
                         onTap: () {
-                          Get.toNamed(RouteHelper.getIntial());
+                          if (page == 'cartPage') {
+                            Get.toNamed(RouteHelper.getCartPage());
+                          } else {
+                            Get.toNamed(RouteHelper.getIntial());
+                          }
                         },
                         child: const AppIcon(icon: Icons.arrow_back_ios)),
                     GetBuilder<PopularProductController>(builder: (controller) {
-                      return Stack(
-                        children: [
-                          const AppIcon(icon: Icons.shopping_cart_outlined),
-                          Get.find<PopularProductController>().totalItems >= 1
-                              ? Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Get.to(() => const CartPage());
-                                    },
-                                    child: const AppIcon(
+                      return InkWell(
+                        onTap: () {
+                          if (controller.totalItems >= 1) {
+                            Get.toNamed(RouteHelper.getCartPage());
+                          }
+                        },
+                        child: Stack(
+                          children: [
+                            const AppIcon(icon: Icons.shopping_cart_outlined),
+                            controller.totalItems >= 1
+                                ? const Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: AppIcon(
                                         icon: Icons.circle,
                                         iconColor: Colors.transparent,
                                         size: 20,
                                         backgroundColor: Colors.blue),
-                                  ),
-                                )
-                              : Container(),
-                          Get.find<PopularProductController>().totalItems >= 1
-                              ? Positioned(
-                                  right: 3,
-                                  top: 3,
-                                  child: BigText(
-                                    text: Get.find<PopularProductController>()
-                                        .totalItems
-                                        .toString(),
-                                    size: 12,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Container()
-                        ],
+                                  )
+                                : Container(),
+                            controller.totalItems >= 1
+                                ? Positioned(
+                                    right: 3,
+                                    top: 3,
+                                    child: BigText(
+                                      text: Get.find<PopularProductController>()
+                                          .totalItems
+                                          .toString(),
+                                      size: 12,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Container()
+                          ],
+                        ),
                       );
                     })
                   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/pages/cart/cart_history.dart';
 import 'package:foodapp/pages/home/main_home_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,13 +12,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selected = 0;
   List pages = [
-    MainHomePage(),
+    const MainHomePage(),
     Container(
       child: Center(child: Text('Next Page')),
     ),
-    Container(
-      child: Center(child: Text('Next next Page')),
-    ),
+    const CartHistory(),
     Container(
       child: Center(child: Text('Next  next next Page')),
     )

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodapp/pages/accounts/account_page.dart';
+import 'package:foodapp/pages/auth/sign_up_page.dart';
 import 'package:foodapp/pages/cart/cart_history.dart';
 import 'package:foodapp/pages/home/main_home_page.dart';
 
@@ -13,13 +15,9 @@ class _HomePageState extends State<HomePage> {
   int _selected = 0;
   List pages = [
     const MainHomePage(),
-    Container(
-      child: Center(child: Text('Next Page')),
-    ),
+    const SignUpPage(),
     const CartHistory(),
-    Container(
-      child: Center(child: Text('Next  next next Page')),
-    )
+    const AccountsPage()
   ];
   void onTapNav(int index) {
     setState(() {

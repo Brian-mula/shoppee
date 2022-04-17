@@ -142,14 +142,18 @@ class SignUpPage extends StatelessWidget {
                       ],
                     ),
                   )
-                : Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.teal),
-                    alignment: Alignment.center,
-                    child: const CircularProgressIndicator());
+                : Center(
+                    child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.blue),
+                        alignment: Alignment.center,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                        )),
+                  );
           },
         ));
   }

@@ -13,6 +13,7 @@ class AuthController extends GetxController implements GetxService {
 
   Future<ResponseModel> registration(SignUpBody signUpBody) async {
     _isLoading = true;
+    update();
     Response response = await authRepo.registration(signUpBody);
     late ResponseModel responseModel;
     if (response.statusCode == 200) {

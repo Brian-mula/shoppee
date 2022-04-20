@@ -4,6 +4,7 @@ import 'package:foodapp/base/show_custom_message.dart';
 import 'package:foodapp/controllers/auth_controller.dart';
 import 'package:foodapp/models/sign_up_model.dart';
 import 'package:foodapp/pages/auth/sign_in_page.dart';
+import 'package:foodapp/routes/routes_helper.dart';
 import 'package:foodapp/widgets/big_text.dart';
 import 'package:foodapp/widgets/text_input_field.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,10 @@ class SignUpPage extends StatelessWidget {
             email: email, name: name, password: password, phone: phone);
         authController.registration(signUpBody).then((status) => {
               if (status.isSuccess)
-                {print("Successfully registered")}
+                {
+                  Get.toNamed(RouteHelper.getIntial()),
+                  print("Successfully registered")
+                }
               else
                 {CustomSnackBar(status.message)}
             });

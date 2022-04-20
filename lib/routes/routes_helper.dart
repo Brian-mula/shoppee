@@ -1,3 +1,4 @@
+import 'package:foodapp/pages/auth/sign_in_page.dart';
 import 'package:foodapp/pages/cart/cart_page.dart';
 import 'package:foodapp/pages/food/popular_food_detail.dart';
 import 'package:foodapp/pages/food/recommended_food_detail.dart';
@@ -14,6 +15,7 @@ class RouteHelper {
   static const String popularFood = '/popular-food';
   static const String recommendedFood = '/recommended-food';
   static const String cartPage = '/cart-page';
+  static const String signIn = '/sign-in';
 
   // ?section for route functions
   static String getSplashPage = "$splashPage";
@@ -24,10 +26,15 @@ class RouteHelper {
       "$recommendedFood?pageId=$pageId&page=$page";
 
   static String getCartPage() => '$cartPage';
+  static String getSignInPage() => '$signIn';
 
   static List<GetPage> routes = [
     GetPage(name: splashPage, page: () => const SplashPage()),
     GetPage(name: initial, page: () => const HomePage()),
+    GetPage(
+        name: signIn,
+        page: () => const SignInPage(),
+        transition: Transition.fadeIn),
     // !popular product route
     GetPage(
         name: popularFood,

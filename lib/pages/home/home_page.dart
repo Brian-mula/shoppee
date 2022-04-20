@@ -15,7 +15,11 @@ class _HomePageState extends State<HomePage> {
   int _selected = 0;
   List pages = [
     const MainHomePage(),
-    const SignUpPage(),
+    Container(
+      child: Center(
+        child: Text("History page"),
+      ),
+    ),
     const CartHistory(),
     const AccountsPage()
   ];

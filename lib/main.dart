@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foodapp/controllers/cart_controller.dart';
 import 'package:foodapp/controllers/popular_product_controller.dart';
 import 'package:foodapp/controllers/recommended_product_controller.dart';
+import 'package:foodapp/pages/auth/sign_up_page.dart';
 import 'package:foodapp/pages/home/main_home_page.dart';
 import 'package:foodapp/pages/splash/splash_page.dart';
 import 'package:foodapp/routes/routes_helper.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       //home: const MainHomePage(),
       initialRoute: RouteHelper.getSplashPage,
+      //home: const SignUpPage(),
 
       getPages: RouteHelper.routes,
     );

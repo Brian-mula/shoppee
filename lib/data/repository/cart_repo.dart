@@ -66,5 +66,9 @@ class CartRepo {
   }
 
 //!to be added to the cart history code
-
+  void clearCartHistory() {
+    removeCart();
+    cartHistory = [];
+    sharedPreferences.remove("cart-history-list");
+  }
 }

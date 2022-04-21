@@ -3,8 +3,7 @@ import 'package:foodapp/controllers/cart_controller.dart';
 import 'package:foodapp/data/repository/popular_product_repo.dart';
 import 'package:foodapp/models/cart_model.dart';
 import 'package:foodapp/models/product_models.dart';
-import 'package:get/get_connect.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 import 'package:get/get.dart';
 
 class PopularProductController extends GetxController {

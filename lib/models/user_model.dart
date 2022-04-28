@@ -17,7 +17,7 @@ class UserModel {
     return UserModel(
         email: json['email'],
         id: json['id'],
-        name: json['name'],
+        name: json['f_name'],
         orderCount: json['order_count'],
         phone: json['phone']);
   }

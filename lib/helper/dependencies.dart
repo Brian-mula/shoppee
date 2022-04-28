@@ -18,7 +18,8 @@ Future<void> init() async {
 
   Get.lazyPut(() => sharedPreferences);
   // !load api client
-  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL));
+  Get.lazyPut(() => ApiClient(
+      appBaseUrl: AppConstants.BASE_URL, sharedPreferences: Get.find()));
 
   // !load te repository
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find()));

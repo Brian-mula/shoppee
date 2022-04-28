@@ -16,6 +16,7 @@ class AccountsPage extends StatelessWidget {
     bool _userloggedIn = Get.find<AuthController>().userLoggedIn();
     if (_userloggedIn) {
       Get.find<UserController>().getUserInfo();
+      print("User has logged in");
     }
     return Scaffold(
         appBar: AppBar(
@@ -74,7 +75,9 @@ class AccountsPage extends StatelessWidget {
                                           iconSize: 25,
                                           size: 50,
                                         ),
-                                        bigText: BigText(text: "0718775512")),
+                                        bigText: BigText(
+                                            text: userController
+                                                .userModel.phone)),
                                     const SizedBox(
                                       height: 20,
                                     ),
@@ -88,7 +91,8 @@ class AccountsPage extends StatelessWidget {
                                           size: 50,
                                         ),
                                         bigText: BigText(
-                                            text: "mulatijunior236@gmail.com")),
+                                            text: userController
+                                                .userModel.email)),
                                     const SizedBox(
                                       height: 20,
                                     ),
@@ -128,7 +132,8 @@ class AccountsPage extends StatelessWidget {
                                           Get.find<CartController>().clear();
                                           Get.find<CartController>()
                                               .clearCartHistory();
-                                          Get.toNamed(RouteHelper.getIntial());
+                                          Get.offNamed(
+                                              RouteHelper.getSignInPage());
                                         }
                                       },
                                       child: AccountWidget(
@@ -150,13 +155,49 @@ class AccountsPage extends StatelessWidget {
                           ],
                         ),
                       )
-                    : const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.blue,
-                        ),
+                    : Container(
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.blue.shade800,
+                        )),
                       ))
                 : Container(
-                    child: const Center(child: Text("You are not Logged in")));
+                    child: Center(
+                        child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.maxFinite,
+                        height: 160,
+                        margin: const EdgeInsets.only(left: 20, right: 20),
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(
+                                    "assets/image/signintocontinue.png"))),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(RouteHelper.getSignInPage());
+                        },
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 160,
+                          margin: const EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                              child: BigText(
+                            text: "Sign in",
+                            color: Colors.white,
+                            size: 30,
+                          )),
+                        ),
+                      )
+                    ],
+                  )));
           },
         ));
   }

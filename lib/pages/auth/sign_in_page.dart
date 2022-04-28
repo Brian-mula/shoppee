@@ -33,7 +33,7 @@ class SignInPage extends StatelessWidget {
           if (status.isSuccess) {
             Get.toNamed(RouteHelper.getIntial());
           } else {
-            CustomSnackBar("Forbidden");
+            CustomSnackBar(status.message);
           }
         });
       }

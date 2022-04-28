@@ -44,7 +44,7 @@ class SignUpPage extends StatelessWidget {
         authController.registration(signUpBody).then((status) => {
               if (status.isSuccess)
                 {
-                  Get.toNamed(RouteHelper.getIntial()),
+                  Get.offNamed(RouteHelper.getIntial()),
                   print("Successfully registered")
                 }
               else
